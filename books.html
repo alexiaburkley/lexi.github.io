@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="infohead">
+    <h2>Lexi's Book Club</h2>
+    <nav>
+        <ul>
+          <li><a href="books.html">Home</a></li>
+          <li><a href="checkout.html">Cart</a></li>
+          <li><a href="invoice.html">Invoice</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+  <h1 style= "text-align: center;">Lexies BookClub</h1>
+  <h2 style="text-align: center;">Book Library</h2>
+  <div class="room">
+    <section class="bookname" data-name="ACE DE LUCA" data-price="1500">
+      <img src="./ace de luca.jpeg" alt="ACE DE LUCA">
+      <div class="text-overlay">
+        ACE DE LUCA $1500
+      </div>
+    </section>
+    <section class="bookname" data-name="ALL Your Perfects" data-price="1500">
+      <img src="./all your perfects.jpeg" alt="ALL Your Perfects">
+      <div class="text-overlay">
+        ALL Your Perfects $1500
+      </div>
+    </section>
+    <section class="bookname" data-name="Fourth Wing" data-price="2000">
+      <img src="./fourth wing.jpeg" alt="Fourth WING">
+      <div class="text-overlay">
+        Fourth Wing $2000
+      </div>
+    </section>
+  </div>
+  <div class="room">
+    <section class="bookname"  data-name="Iron Flame" data-price="2000">
+      <img src="./ironflame.jpeg" alt="Iron Flame">
+      <div class="text-overlay">
+        Iron Flame $2000
+      </div>
+    </section>
+    <section class="bookname" data-name="It Ends With Us" data-price="2000">
+      <img src="./it ends with us.jpeg" alt="It Ends With US">
+      <div class="text-overlay">
+        It Ends With Us $2000
+      </div>
+    </section>
+    <section class="bookname" data-name="It Starts With Us" data-price="1500">
+      <img src="./it starts with us.jpeg" alt="It Starts With Us">
+      <div class="text-overlay">
+        It Starts With Us $1500
+      </div>
+    </section>
+  </div>
+  <div class="room">
+    <section class="bookname" data-name="November 9" data-price="1500">
+      <img src="./november 9.jpeg" alt="November 9">
+      <div class="text-overlay">
+        November 9 $1500
+      </div>
+    </section>
+    <section class="bookname" data-name="Onyx Storm" data-price="3000">
+      <img src="./onyx storm.jpeg" alt="Onyx Storm">
+      <div class="text-overlay">
+        Onyx Storm $3000
+      </div>
+    </section>
+    <section class="bookname" data-name="Shatter Me Series" data-price="15000">
+      <img src="./shatterme.jpeg" alt="Shatter Me Series">
+      <div class="text-overlay">
+        Shatter Me Series $15000
+      </div>
+    </section>
+  </div>
+  <div class="room">
+    <section class="bookname" data-name="Twisted Hate" data-price="2000">
+      <img src="./twisted hate.jpeg" alt="Twisted Hate">
+      <div class="text-overlay">
+        Twisted Hate $2000
+      </div>
+    </section>
+    <section class="bookname" data-name="Twisted Love" data-price="2000">
+      <img src="./twisted love.jpeg" alt="Twisted Love">
+      <div class="text-overlay">
+        Twisted Love $2000
+      </div>
+    </section>
+    <section class="bookname" data-name="Twisted Series" data-price="5500">
+      <img src="./twisted series.jpeg" alt="Twisted Series">
+      <div class="text-overlay">
+        Twisted Series $5500
+      </div>
+    </section>
+  </div>
+  <div class="room">
+    <section class="bookname" data-name="Twisted Games" data-price="2000">
+      <img src="./twsited games.jpeg" alt="Twisted Games">
+      <div class="text-overlay">
+        Twisted Games $2000
+      </div>
+    </section>
+    <section class="bookname" data-name="Ugly Love" data-price="1500">
+      <img src="./ugly love.jpeg" alt="Ugly Love">
+      <div class="text-overlay">
+        Ugly Love $1500
+      </div>
+    </section>
+    <section class="bookname" data-name="Verity" data-price="2000">
+      <img src="./verity.jpeg" alt="Verity">
+      <div class="text-overlay">
+        Verity $2000
+      </div>
+    </section>
+  </div>
+  <h2>Shopping Cart</h2>
+    <ul id="cart-items"></ul>
+</main>
+<script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".bookname").forEach((book) => {
+      book.addEventListener("click", function () {
+        let bookName = this.getAttribute("data-name");
+        let bookPrice = this.getAttribute("data-price");
+
+        // Add book to cart
+        cart.push({ name: bookName, price: bookPrice });
+
+        // Save cart to localStorage
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        // Update cart display
+        updateCart();
+      });
+    });
+
+    // Load cart from localStorage
+    updateCart();
+  });
+
+  function updateCart() {
+    let cartList = document.getElementById("cart-items");
+    cartList.innerHTML = "";
+
+    cart.forEach((item, index) => {
+      let li = document.createElement("li");
+      li.textContent = `${item.name} - $${item.price}`;
+
+      let removeBtn = document.createElement("button");
+      removeBtn.textContent = "Remove";
+      removeBtn.onclick = function () {
+        cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart)); // Update localStorage
+        updateCart();
+      };
+
+      li.appendChild(removeBtn);
+      cartList.appendChild(li);
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .invoice-container {
+      background: transparent;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: left;
+    }
+
+    h1, h2 {
+      color: white;
+    }
+
+    #invoice-items {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #invoice-items li {
+      background: transparent;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 5px;
+      border-left: 5px solid #007bff;
+    }
+
+    .order-details {
+      font-size: 14px;
+      color: white;
+    }
+
+    .total {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .print-btn {
+      background: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    .print-btn:hover {
+      background: #0056b3;
+    }
+
+  </style>
+</head>
+<body>
+  <header class="infohead">
+    <h2>Lexi's Book Club</h2>
+    <nav>
+        <ul>
+          <li><a href="books.html">Home</a></li>
+          <li><a href="checkout.html">Cart</a></li>
+          <li><a href="invoice.html">Invoice</a></li>
+        </ul>
+    </nav>
+</header>
+  <div class="invoice-container">
+    <h1>Invoice</h1>
+    <p class="order-details"><strong>Order Date:</strong> <span id="order-date"></span></p>
+    <p class="order-details"><strong>Order Number:</strong> <span id="order-number"></span></p>
+
+    <h2>Purchased Books</h2>
+    <ul id="invoice-items"></ul>
+
+    <h2 class="total">Total Amount: $<span id="total-amount">0</span></h2>
+
+    <button class="print-btn" onclick="printInvoice()">Print Invoice</button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let invoiceItems = document.getElementById("invoice-items");
+      let totalAmount = 0;
+
+      invoiceItems.innerHTML = "";
+      cart.forEach(item => {
+        let li = document.createElement("li");
+        li.textContent = `${item.name} - $${item.price}`;
+        totalAmount += parseInt(item.price);
+        invoiceItems.appendChild(li);
+      });
+
+      document.getElementById("total-amount").textContent = totalAmount;
+
+      // Generate order number and date
+      let orderNumber = Math.floor(100000 + Math.random() * 900000);
+      let orderDate = new Date().toLocaleDateString();
+
+      document.getElementById("order-number").textContent = orderNumber;
+      document.getElementById("order-date").textContent = orderDate;
+
+      // Clear cart after invoice is generated
+      localStorage.removeItem("cart");
+    });
+
+    function printInvoice() {
+      window.print();
+    }
+  </script>
+
+</body>
+</html>

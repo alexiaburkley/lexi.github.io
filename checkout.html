@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h2>Lexies Book Club - Checkout</h2>
+    <nav>
+      <ul>
+        <li><a href="books.html">Home</a></li>
+        <li><a href="checkout.html">Cart</a></li>
+        <li><a href="invoice.html">Invoice</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Shopping Cart</h1>
+    <ul id="checkout-cart"></ul>
+    <h2>Total: $<span id="total-price">0</span></h2>
+    <button onclick="clearCart()">Clear Cart</button>
+    <button onclick="checkout()">Proceed to Payment</button>
+  </main>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    document.addEventListener("DOMContentLoaded", function () {
+      displayCart();
+    });
+
+    function displayCart() {
+      let cartList = document.getElementById("checkout-cart");
+      let totalPrice = 0;
+      cartList.innerHTML = "";
+
+      cart.forEach((item, index) => {
+        let li = document.createElement("li");
+        li.textContent = `${item.name} - $${item.price}`;
+        totalPrice += parseInt(item.price);
+
+        let removeBtn = document.createElement("button");
+        removeBtn.textContent = "Remove";
+        removeBtn.onclick = function () {
+          cart.splice(index, 1);
+          localStorage.setItem("cart", JSON.stringify(cart));
+          displayCart();
+        };
+
+        li.appendChild(removeBtn);
+        cartList.appendChild(li);
+      });
+
+      document.getElementById("total-price").textContent = totalPrice;
+    }
+
+    function clearCart() {
+      localStorage.removeItem("cart");
+      cart = [];
+      displayCart();
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+      }
+
+      alert("Proceeding to payment...");
+      localStorage.removeItem("cart"); // Clear cart after checkout
+      window.location.href = "invoice.html"; // Redirect to an invoice page
+    }
+  </script>
+</body>
+</html>
